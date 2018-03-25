@@ -17,7 +17,7 @@ class NotesListViewController: UIViewController, UITableViewDataSource {
     var notebook: Notebook!
     var notes : [Note] = []
     
-    var dataController = DataController.init(modelName: "Mooskine")
+    var dataController : DataController!
     
     /// A date formatter for date text in note cells
     let dateFormatter: DateFormatter = {
@@ -33,7 +33,7 @@ class NotesListViewController: UIViewController, UITableViewDataSource {
         navigationItem.rightBarButtonItem = editButtonItem
         
         let fetch : NSFetchRequest<Note> = Note.fetchRequest()
-        let predicate = NSPredicate(format: "notebook =- %@", notebook)
+        let predicate = NSPredicate(format: "notebook == %@", notebook)
         fetch.predicate = predicate
         
         let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: false)
@@ -146,7 +146,8 @@ class NotesListViewController: UIViewController, UITableViewDataSource {
         if let vc = segue.destination as? NoteDetailsViewController {
             if let indexPath = tableView.indexPathForSelectedRow {
                 vc.note = note(at: indexPath)
-
+                vc.dataController = dataController
+                
                 vc.onDelete = { [weak self] in
                     if let indexPath = self?.tableView.indexPathForSelectedRow {
                         self?.deleteNote(at: indexPath)

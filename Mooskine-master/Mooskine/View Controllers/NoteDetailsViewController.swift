@@ -30,8 +30,9 @@ class NoteDetailsViewController: UIViewController {
         super.viewDidLoad()
         if let creationDate = note.creationDate{
             navigationItem.title = dateFormatter.string(from: creationDate)
-            textView.text = note.text
+          
         }
+          textView.text = note.text
      
     }
 
@@ -61,7 +62,8 @@ extension NoteDetailsViewController {
 
 extension NoteDetailsViewController: UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
-        note.text = textView.text
+       note.text = textView.text
         try? dataController.viewContext.save()
+        
     }
 }
